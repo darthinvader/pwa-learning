@@ -11,3 +11,15 @@ window.addEventListener("beforeinstallprompt", (e) => {
   deferredPrompt = e;
   return false;
 });
+
+fetch("https://httpbin.org/get")
+  .then((response) => {
+    console.log(response);
+    return response.json();
+  })
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
