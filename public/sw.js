@@ -8,6 +8,7 @@ self.addEventListener("install", function (event) {
       cache.addAll([
         "/",
         "/index.html",
+        "/offline.html",
         "/src/js/app.js",
         "/src/js/feed.js",
         "/src/js/promise.js",
@@ -47,12 +48,18 @@ self.addEventListener("fetch", function (event) {
       if (response) {
         return response;
       } else {
-        return fetch(event.request).then((res) => {
-          return caches.open(CACHE_DYNAMIC_NAME).then((cache) => {
-            cache.put(event.request.url, res.clone());
-            return res;
+        return fetch(event.request)
+          .then((res) => {
+            return caches.open(CACHE_DYNAMIC_NAME).then((cache) => {
+              cache.put(event.request.url, res.clone());
+              return res;
+            });
+          })
+          .catch((err) => {
+            return caches.open(CACHE_STATIC_NAME).then((cache) => {
+              return cache.match("/offline.html");
+            });
           });
-        });
       }
     })
   );
