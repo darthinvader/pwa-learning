@@ -66,6 +66,10 @@ self.addEventListener("activate", function (event) {
 // });
 
 // cache only
+// self.addEventListener("fetch", function (event) {
+//   event.respondWith(caches.match(event.request));
+// });
+// Network only
 self.addEventListener("fetch", function (event) {
-  event.respondWith(caches.match(event.request));
+  event.respondWith(fetch(event.request));
 });
