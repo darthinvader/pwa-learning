@@ -1,4 +1,4 @@
-const CACHE_STATIC_NAME = "static-v6";
+const CACHE_STATIC_NAME = "static-v7";
 const CACHE_DYNAMIC_NAME = "dynamic-v4";
 self.addEventListener("install", function (event) {
   console.log("[Service Worker] Installing Service Worker ...", event);
@@ -65,6 +65,19 @@ self.addEventListener("activate", function (event) {
 //   );
 // });
 
+//Cache then network
+
+self.addEventListener("fetch", function (event) {
+  event.respondWith(
+    caches.open(CACHE_DYNAMIC_NAME).then((cache) => {
+      return fetch(event.request).then((res) => {
+        cache.put(event.request, res.clone());
+        return res;
+      });
+    })
+  );
+});
+
 // cache only
 // self.addEventListener("fetch", function (event) {
 //   event.respondWith(caches.match(event.request));
@@ -75,19 +88,19 @@ self.addEventListener("activate", function (event) {
 // });
 
 // Network with cache fallback
-self.addEventListener("fetch", function (event) {
-  event.respondWith(
-    fetch(event.request)
-      .then((res) => {
-        return fetch(event.request).then((res) => {
-          return caches.open(CACHE_DYNAMIC_NAME).then((cache) => {
-            cache.put(event.request.url, res.clone());
-            return res;
-          });
-        });
-      })
-      .catch((err) => {
-        return caches.match(event.request);
-      })
-  );
-});
+// self.addEventListener("fetch", function (event) {
+//   event.respondWith(
+//     fetch(event.request)
+//       .then((res) => {
+//         return fetch(event.request).then((res) => {
+//           return caches.open(CACHE_DYNAMIC_NAME).then((cache) => {
+//             cache.put(event.request.url, res.clone());
+//             return res;
+//           });
+//         });
+//       })
+//       .catch((err) => {
+//         return caches.match(event.request);
+//       })
+//   );
+// });
