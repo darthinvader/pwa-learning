@@ -42,6 +42,11 @@ function onSaveButtonClicked(event) {
     });
   }
 }
+function clearCards() {
+  while (sharedMomentsArea.hasChildNodes()) {
+    sharedMomentsArea.removeChild(sharedMomentsArea.lastChild);
+  }
+}
 
 function createCard() {
   var cardWrapper = document.createElement("div");
@@ -69,11 +74,33 @@ function createCard() {
   componentHandler.upgradeElement(cardWrapper);
   sharedMomentsArea.appendChild(cardWrapper);
 }
+const url = "https://httpbin.org/get";
+let networkDataReceived = false;
 
-fetch("https://httpbin.org/get")
+fetch(url)
   .then(function (res) {
     return res.json();
   })
   .then(function (data) {
+    networkDataReceived = true;
+    console.log("From Web", data);
+    clearCards();
     createCard();
   });
+
+if ("caches" in window) {
+  caches
+    .match(url)
+    .then((response) => {
+      if (response) {
+        return response.json();
+      }
+    })
+    .then((data) => {
+      console.log("From Cache", data);
+      if (!networkDataReceived) {
+        clearCards();
+        createCard();
+      }
+    });
+}
