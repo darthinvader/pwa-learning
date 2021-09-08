@@ -12,3 +12,11 @@ const writeData = (st, data) => {
     return tx.complete;
   });
 };
+
+function readAllData(st) {
+  return dbPromise.then((db) => {
+    var tx = db.transaction(st, "readonly");
+    var store = tx.objectStore(st);
+    return store.getAll();
+  });
+}
