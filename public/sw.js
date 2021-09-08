@@ -1,4 +1,6 @@
-var CACHE_STATIC_NAME = "static-v15";
+importScripts("/src/js/idb.js");
+
+var CACHE_STATIC_NAME = "static-v16";
 var CACHE_DYNAMIC_NAME = "dynamic-v2";
 var STATIC_FILES = [
   "/",
@@ -8,6 +10,7 @@ var STATIC_FILES = [
   "/src/js/feed.js",
   "/src/js/promise.js",
   "/src/js/fetch.js",
+  "/src/js/idb.js",
   "/src/js/material.min.js",
   "/src/css/app.css",
   "/src/css/feed.css",
