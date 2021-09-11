@@ -9,4 +9,18 @@ workboxSW.router.registerRoute(
   })
 );
 
+workboxSW.router.registerRoute(
+  "https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css",
+  workboxSW.strategies.staleWhileRevalidate({
+    cacheName: "google-fonts",
+  })
+);
+
+workboxSW.router.registerRoute(
+  /.*(?:firebasestorage\.googleapis)\.com.*$/,
+  workboxSW.strategies.staleWhileRevalidate({
+    cacheName: "post-images",
+  })
+);
+
 workboxSW.precache([]);
