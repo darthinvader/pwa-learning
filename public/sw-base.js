@@ -1,5 +1,8 @@
 importScripts("workbox-sw.prod.v2.1.3.js");
 
+importScripts("/src/js/idb.js");
+importScripts("/src/js/utility.js");
+
 const workboxSW = new self.WorkboxSW();
 
 workboxSW.router.registerRoute(
@@ -26,5 +29,7 @@ workboxSW.router.registerRoute(
     cacheName: "post-images",
   })
 );
+
+workboxSW.router.registerRoute("some url", (args) => {});
 
 workboxSW.precache([]);
